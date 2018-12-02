@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 namespace Archive
 {
-    class ExplicitArchiver : IDisposable
+    class CompiledArchiver : IDisposable
     {
         private class ArchiveStateMachine
         {
             enum State { Start, Download, Save }
             private TaskCompletionSource<string> _tcs;
-            private ExplicitArchiver _archiver;
+            private CompiledArchiver _archiver;
             private string _name;
             private string _contents;
             private string _path;
@@ -17,7 +17,7 @@ namespace Archive
             private Task<string> _saveTask;
             private State _state = State.Start;
 
-            public Task Task
+            public Task<string> Task
             { 
                 get
                 {
@@ -25,7 +25,7 @@ namespace Archive
                 }
             }
 
-            public ArchiveStateMachine(ExplicitArchiver archiver, string name)
+            public ArchiveStateMachine(CompiledArchiver archiver, string name)
             {
                 _tcs = new TaskCompletionSource<string>();
                 _archiver = archiver;
@@ -44,11 +44,7 @@ namespace Archive
                             _downloadTask.ContinueWith(_ => MoveNext());
                             break;
                         case State.Download:
-                            if (_downloadTask.IsCanceled)
-                            {
-                                _tcs.SetCanceled();
-                            }
-                            else if (_downloadTask.IsFaulted)
+                            if (_downloadTask.IsFaulted)
                             {
                                 _tcs.SetException(_downloadTask.Exception.InnerException);
                             }
@@ -63,11 +59,7 @@ namespace Archive
                             }
                             break;
                         case State.Save:
-                            if (_saveTask.IsCanceled)
-                            {
-                                _tcs.SetCanceled();
-                            }
-                            else if (_saveTask.IsFaulted)
+                            if (_saveTask.IsFaulted)
                             {
                                 _tcs.SetException(_saveTask.Exception.InnerException);
                             }
@@ -87,7 +79,7 @@ namespace Archive
             }
         }
 
-        public Task Archive(string name)
+        public Task<string> Archive(string name)
         {
             Console.WriteLine($"  Archiving {name}");
 

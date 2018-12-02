@@ -16,7 +16,7 @@ namespace Archive
         static async Task ArchiveBooks(IEnumerable<string> books)
         {
             Console.WriteLine("Starting archive...");
-            using (var archiver = new ExplicitArchiver())
+            using (var archiver = new Archiver())
             {
                 foreach (var book in books)
                 {
