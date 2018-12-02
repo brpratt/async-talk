@@ -11,6 +11,11 @@ namespace Pythagorean
             Console.WriteLine($"Result = {result}");
         }
 
+        static int Pythagorean(int a, int b)
+        {
+            return Sum(Square(a), Square(b));
+        }
+
         static int Sum(int a, int b)
         {
             return a + b;
@@ -19,11 +24,6 @@ namespace Pythagorean
         static int Square(int x)
         {
             return x * x;
-        }
-
-        static int Pythagorean(int a, int b)
-        {
-            return Sum(Square(a), Square(b));
         }
     }
 }
