@@ -8,11 +8,11 @@ namespace ContinueWith
     {
         static void Main(string[] args)
         {
-            Test1();
-            Test2();
+            Example1();
+            //Example2();
         }
 
-        static void Test1()
+        static void Example1()
         {
             var task1 = Task.Run(() => DoWork(3));
             var task2 = task1.ContinueWith(_ => DoWork(5));
@@ -29,7 +29,7 @@ namespace ContinueWith
             Console.WriteLine("  done");
         }
 
-        static void Test2()
+        static void Example2()
         {
             var task = Task.Run(() => Generate(1))
                 .ContinueWith(t => t.Result + Generate(2))

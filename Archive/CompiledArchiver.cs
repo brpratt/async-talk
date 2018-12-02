@@ -39,6 +39,7 @@ namespace Archive
                     switch (_state)
                     {
                         case State.Start:
+                            Console.WriteLine($"  Archiving {_name}");
                             _downloadTask = _archiver.Download(_name);
                             _state = State.Download;
                             _downloadTask.ContinueWith(_ => MoveNext());
@@ -81,8 +82,6 @@ namespace Archive
 
         public Task<string> Archive(string name)
         {
-            Console.WriteLine($"  Archiving {name}");
-
             var sm = new ArchiveStateMachine(this, name);
             sm.MoveNext();
             return sm.Task;
